@@ -76,12 +76,15 @@ def load_csv(filepath: str) -> pd.DataFrame:
     ValueError
         If the file is empty or is missing any required sensor columns.
     """
-    try:
-        df = pd.read_csv(filepath)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"CSV file not found: {filepath}")
-    except Exception as exc:
-        raise ValueError(f"Could not read CSV file '{filepath}': {exc}") from exc
+    if isinstance(filepath, pd.DataFrame):
+        df = filepath.copy()
+    else:
+        try:
+            df = pd.read_csv(filepath)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"CSV file not found: {filepath}")
+        except Exception as exc:
+            raise ValueError(f"Could not read CSV file '{filepath}': {exc}") from exc
 
     if df.empty:
         raise ValueError(f"CSV file is empty: {filepath}")

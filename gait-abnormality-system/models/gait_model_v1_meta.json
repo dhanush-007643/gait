@@ -1,0 +1,52 @@
+{
+  "label_classes": [
+    "antalgic",
+    "ataxic",
+    "hemiplegic",
+    "normal",
+    "parkinsonian",
+    "spastic"
+  ],
+  "feature_columns": [
+    "duration",
+    "step_count",
+    "cadence",
+    "walking_speed",
+    "step_length",
+    "stride_length",
+    "step_time",
+    "stride_time",
+    "stance_time",
+    "swing_time",
+    "gait_symmetry",
+    "mean_acceleration",
+    "acceleration_std",
+    "acceleration_rms",
+    "mean_gyroscope",
+    "gyroscope_std"
+  ],
+  "valid_classes": [
+    "normal",
+    "parkinsonian",
+    "hemiplegic",
+    "ataxic",
+    "spastic",
+    "antalgic"
+  ],
+  "metrics": {
+    "accuracy": 0.9166666666666666,
+    "precision_macro": 0.9249999999999999,
+    "recall_macro": 0.9166666666666666,
+    "f1_macro": 0.9160052910052912,
+    "train_samples": 96,
+    "test_samples": 24,
+    "f1_antalgic": 1.0,
+    "f1_ataxic": 0.75,
+    "f1_hemiplegic": 0.8571428571428571,
+    "f1_normal": 1.0,
+    "f1_parkinsonian": 1.0,
+    "f1_spastic": 0.8888888888888888
+  },
+  "model_name": "random_forest_baseline",
+  "model_version": "1.0.0"
+}

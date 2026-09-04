@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.pkl
+!models/gait_model_v1.pkl
+.env
+.env.local
+node_modules/
+dist/
+*.db
+.pytest_cache/

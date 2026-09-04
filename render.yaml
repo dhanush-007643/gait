@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: gait-abnormality-api
+    env: python
+    plan: free
+    rootDir: gait-abnormality-system
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT "app.app:app"
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SECRET_KEY
+        generateValue: true
+      - key: MODEL_PATH
+        value: models/gait_model_v1.pkl
+      - key: CORS_ORIGINS
+        value: "*"

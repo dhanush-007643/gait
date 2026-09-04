@@ -1,0 +1,31 @@
+# Core data-science stack
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+
+# Machine learning
+scikit-learn>=1.3
+joblib>=1.3
+
+# Web API & WSGI Server
+flask>=3.0
+flask-cors>=4.0
+gunicorn>=21.2
+itsdangerous>=2.1
+werkzeug>=3.0
+
+# PostgreSQL database driver
+# Install the binary version (no system libpq required):
+#   pip install psycopg2-binary
+psycopg2-binary>=2.9
+
+# Reporting / visualisation
+matplotlib>=3.7
+seaborn>=0.13
+
+# Optional: class-imbalance oversampling (SMOTE)
+# imbalanced-learn>=0.11
+
+# Notebook support (optional)
+jupyter>=1.0
+ipykernel>=6.0

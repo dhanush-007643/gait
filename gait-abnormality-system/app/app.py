@@ -136,9 +136,21 @@ def upload_too_large(_error):
 
 
 def get_model():
-    """Lazy-load and cache the trained model."""
+    """Lazy-load and cache the trained model, auto-training if absent."""
     global _model, _feature_columns
     if _model is None:
+        if not Path(MODEL_PATH).exists():
+            try:
+                from train_classifier import run_pipeline
+                data_csv = Path(__file__).resolve().parent.parent / "data" / "processed" / "gait_training_dataset.csv"
+                if not data_csv.exists():
+                    data_csv = Path.cwd() / "data" / "processed" / "gait_training_dataset.csv"
+                if not data_csv.exists():
+                    data_csv = Path.cwd() / "gait-abnormality-system" / "data" / "processed" / "gait_training_dataset.csv"
+                Path(MODEL_PATH).parent.mkdir(parents=True, exist_ok=True)
+                run_pipeline(csv_path=str(data_csv), out_path=str(MODEL_PATH))
+            except Exception as e:
+                app.logger.warning("Auto-training fallback failed: %s", e)
         _model = load_model(MODEL_PATH)
         _feature_columns = load_feature_columns(MODEL_PATH)
     return _model, _feature_columns

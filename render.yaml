@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     rootDir: gait-abnormality-system
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python src/train_classifier.py --csv data/processed/gait_training_dataset.csv --out models/gait_model_v1.pkl
     startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT "app.app:app"
     healthCheckPath: /api/health
     autoDeploy: true

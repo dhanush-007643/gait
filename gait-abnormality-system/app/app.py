@@ -466,7 +466,7 @@ def upload_csv():
         }), 201
     except Exception as exc:
         app.logger.exception("CSV processing failed")
-        return jsonify({"error": "Failed to process CSV. Check the required columns and numeric values."}), 422
+        return jsonify({"error": f"Failed to process CSV: {str(exc)}"}), 422
     finally:
         if os.path.exists(tmp_path):
             try:

@@ -159,7 +159,6 @@ export const uploadApi = {
     const form = new FormData();
     form.append('file', file);
     const res = await http.post<UploadResult>('/api/gait/upload', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: e => { if (e.total) onProgress?.(Math.round(e.loaded / e.total * 100)); },
     });
     return res.data;

@@ -28,6 +28,32 @@ SENSOR_SIGNAL_COLUMNS = ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"
 # Loading
 # ---------------------------------------------------------------------------
 
+def _normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize sensor column names to standard lowercase names."""
+    col_map = {}
+    standard_map = {
+        "timestamp": ["timestamp", "time", "datetime", "date_time", "t", "time_s", "timestamps"],
+        "acc_x": ["acc_x", "accel_x", "acceleration_x", "accx", "accelerationx", "ax"],
+        "acc_y": ["acc_y", "accel_y", "acceleration_y", "accy", "accelerationy", "ay"],
+        "acc_z": ["acc_z", "accel_z", "acceleration_z", "accz", "accelerationz", "az"],
+        "gyro_x": ["gyro_x", "gyroscope_x", "gyrox", "gyroscopex", "gx"],
+        "gyro_y": ["gyro_y", "gyroscope_y", "gyroy", "gyroscopey", "gy"],
+        "gyro_z": ["gyro_z", "gyroscope_z", "gyroz", "gyroscopez", "gz"],
+        "label": ["label", "class", "gait_class", "target", "activity"],
+    }
+    cleaned_names = {c: str(c).strip().lower().replace(" ", "_").replace("-", "_") for c in df.columns}
+    for orig_col, clean_name in cleaned_names.items():
+        matched = False
+        for std_col, synonyms in standard_map.items():
+            if clean_name in synonyms:
+                col_map[orig_col] = std_col
+                matched = True
+                break
+        if not matched:
+            col_map[orig_col] = clean_name
+    return df.rename(columns=col_map)
+
+
 def load_csv(filepath: str) -> pd.DataFrame:
     """
     Load a sensor CSV file into a pandas DataFrame.
@@ -60,11 +86,12 @@ def load_csv(filepath: str) -> pd.DataFrame:
     if df.empty:
         raise ValueError(f"CSV file is empty: {filepath}")
 
+    df = _normalize_columns(df)
+
     missing = [c for c in REQUIRED_SENSOR_COLUMNS if c not in df.columns]
     if missing:
         raise ValueError(
-            f"CSV file '{filepath}' is missing required columns: {missing}\n"
-            f"Found columns: {list(df.columns)}"
+            f"CSV is missing required sensor columns: {missing}. Found columns: {list(df.columns)}"
         )
 
     # Parse timestamp — keep as numeric if parsing fails (some datasets use
